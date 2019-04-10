@@ -18,10 +18,14 @@ public class ThreadStates extends javax.swing.JFrame {
      */
     public ThreadStates() {
         initComponents();
+        this.setVisible(true);
+        this.setSize(500, 500);
+        repaint();
     }
 
     public void addPanel(JPanel panel){
         this.add(panel);
+        repaint();
     }
     
     /**
@@ -34,7 +38,7 @@ public class ThreadStates extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout());
+        getContentPane().setLayout(new java.awt.GridLayout(5, 1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

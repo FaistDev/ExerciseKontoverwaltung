@@ -6,6 +6,7 @@
 package bl;
 
 import gui.GUI;
+import gui.ThreadStatePanel;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,11 +21,13 @@ public class AccountUser implements Runnable {
     private String name;
     private Account account;
     private GUI gui;
+    private ThreadStatePanel panel;
 
-    public AccountUser(String name, Account account,GUI gui) {
+    public AccountUser(String name, Account account,GUI gui, ThreadStatePanel panel) {
         this.name = name;
         this.account = account;
         this.gui=gui;
+        this.panel=panel;
     }
 
     @Override
@@ -36,6 +39,7 @@ public class AccountUser implements Runnable {
     public void run() {
         Random r = new Random();
         for (int i = 0; i < 10; i++) {
+            panel.setRunning();
             int time = r.nextInt(1000 - 1 + 1) + 1;
             int amount = r.nextInt(50 - 10 + 1) + 10;
             int depOrWith = r.nextInt(2 - 1 + 1) + 1;
@@ -56,6 +60,7 @@ public class AccountUser implements Runnable {
                     } else {
                         try {
                              gui.putLine(name+": Not enough money on account!\n");
+                             panel.setWaiting();
                             account.wait();
                         } catch (InterruptedException ex) {
                             Logger.getLogger(AccountUser.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,8 +76,9 @@ public class AccountUser implements Runnable {
                     account.notifyAll();
                 }
             }
+            panel.setWaiting();
         }
-
+        panel.setNotUsed();
     }
 
 }

@@ -18,6 +18,7 @@ public class GUI extends javax.swing.JFrame {
 
     private DefaultListModel dlm = new DefaultListModel();
     private Account account;
+    private ThreadStates threadStates = new ThreadStates();
     /**
      * Creates new form GUI
      */
@@ -128,7 +129,10 @@ public class GUI extends javax.swing.JFrame {
 
     private void miAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAddUserActionPerformed
         // TODO add your handling code here:
-        dlm.addElement(new AccountUser(JOptionPane.showInputDialog("Name:"), account,this));
+        String name = JOptionPane.showInputDialog("Name:");
+        ThreadStatePanel panel = new ThreadStatePanel(name);
+        threadStates.addPanel(panel);
+        dlm.addElement(new AccountUser(name, account,this,panel));
     }//GEN-LAST:event_miAddUserActionPerformed
 
     private void miTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTestActionPerformed
