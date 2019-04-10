@@ -23,7 +23,7 @@ public class Account {
     private double amount;
     private int accNum;
     private DefaultListModel dlmUsers = new DefaultListModel();
-    private ThreadStates threadStates = new ThreadStates();
+    //private ThreadStates threadStates = new ThreadStates();
     private GUI gui;
     private String log="";
 
@@ -31,7 +31,7 @@ public class Account {
         this.amount = amount;
         accNum=++accCount;
         this.gui=gui;
-        threadStates.setTitle(this.toString());
+        //threadStates.setTitle(this.toString());
     }
     
     public void appendToLog(String txt){
@@ -45,7 +45,7 @@ public class Account {
     public void addUser(){
         String name = JOptionPane.showInputDialog("Name:");
         ThreadStatePanel panel = new ThreadStatePanel(name);
-        threadStates.addPanel(panel);
+        //threadStates.addPanel(panel);
         dlmUsers.addElement(new AccountUser(name,this,gui,panel));
     }
 
