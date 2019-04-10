@@ -52,7 +52,7 @@ public class AccountTest {
         return Arrays.asList(new Object[][]{
             {20.0, 30.0},
             {15.0, 35.0},
-            {10.0, 45.0}
+            {10.0, 40.0}
         });
     }
 
