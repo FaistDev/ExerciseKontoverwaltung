@@ -24,6 +24,7 @@ public class ThreadStatePanel extends javax.swing.JPanel {
         this.setNotUsed();
     }
     
+    
     public void setRunning(){
         lbThreadName.setBackground(Color.green);
     }

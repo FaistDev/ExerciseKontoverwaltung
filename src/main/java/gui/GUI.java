@@ -7,6 +7,8 @@ package gui;
 
 import bl.Account;
 import bl.AccountUser;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -16,15 +18,31 @@ import javax.swing.JOptionPane;
  */
 public class GUI extends javax.swing.JFrame {
 
-    private DefaultListModel dlm = new DefaultListModel();
     private Account account;
-    private ThreadStates threadStates = new ThreadStates();
+    private DefaultListModel dlmAccounts = new DefaultListModel();
+
     /**
      * Creates new form GUI
      */
     public GUI() {
         initComponents();
-        userList.setModel(dlm);
+        newAcc();
+        userList.setModel(account.getDlmUsers());
+        accountList.setModel(dlmAccounts);
+    }
+
+    public Account getRandomAccount() {
+        Random r = new Random();
+        if (dlmAccounts.size() > 1) {
+            int randInt = r.nextInt(dlmAccounts.size() - 1 - 0 + 1) + 0;
+            Account a = (Account) dlmAccounts.get(randInt);
+            if (a == account) {
+                getRandomAccount();
+            } else {
+                return a;
+            }
+        }
+        return null;
     }
 
     /**
@@ -46,6 +64,11 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         logOutput = new javax.swing.JTextArea();
         lbAccAmount = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        accountList = new javax.swing.JList<>();
+        jLabel3 = new javax.swing.JLabel();
 
         miAddUser.setText("Add User");
         miAddUser.addActionListener(new java.awt.event.ActionListener() {
@@ -84,35 +107,68 @@ public class GUI extends javax.swing.JFrame {
         logOutput.setEditable(false);
         logOutput.setColumns(20);
         logOutput.setRows(5);
-        logOutput.setComponentPopupMenu(jPopupMenu2);
         jScrollPane2.setViewportView(logOutput);
 
         lbAccAmount.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lbAccAmount.setText("jLabel1");
 
+        jLabel1.setText("Users");
+
+        jLabel2.setText("Accounts");
+
+        accountList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        accountList.setComponentPopupMenu(jPopupMenu2);
+        accountList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                accountListMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(accountList);
+
+        jLabel3.setText("Log");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lbAccAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbAccAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(159, 159, 159)
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addComponent(lbAccAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
                 .addContainerGap())
@@ -121,37 +177,50 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void newAcc() {
+        account = new Account(50.0, this);
+        dlmAccounts.addElement(account);
+        showBalance();
+    }
+
     private void miAddAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAddAccountActionPerformed
         // TODO add your handling code here:
-        account = new Account(50.0);
-        showBalance();
+        newAcc();
     }//GEN-LAST:event_miAddAccountActionPerformed
 
     private void miAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAddUserActionPerformed
         // TODO add your handling code here:
-        String name = JOptionPane.showInputDialog("Name:");
-        ThreadStatePanel panel = new ThreadStatePanel(name);
-        threadStates.addPanel(panel);
-        dlm.addElement(new AccountUser(name, account,this,panel));
+        account.addUser();
     }//GEN-LAST:event_miAddUserActionPerformed
 
     private void miTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTestActionPerformed
         // TODO add your handling code here:
         Thread t;
         for (int selectedIndice : userList.getSelectedIndices()) {
-            t = new Thread((Runnable)dlm.get(selectedIndice));
+            t = new Thread((Runnable) account.getDlmUsers().get(selectedIndice));
             t.start();
         }
-        
+
     }//GEN-LAST:event_miTestActionPerformed
 
-    public void putLine(String line){
+    private void accountListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accountListMouseClicked
+        // TODO add your handling code here:
+        if (accountList.getSelectedIndex() != -1) {
+            account = (Account) dlmAccounts.get(accountList.getSelectedIndex());
+            userList.setModel(account.getDlmUsers());
+            showBalance();
+        }
+    }//GEN-LAST:event_accountListMouseClicked
+
+    public void putLine(String line) {
         logOutput.append(line);
     }
-    
-    public void showBalance(){
-        lbAccAmount.setText(""+account.getAmount()+" €");
+
+    public void showBalance() {
+        lbAccAmount.setText("" + account.getAmount() + " €");
+        logOutput.setText(account.getLog());
     }
+
     /**
      * @param args the command line arguments
      */
@@ -188,10 +257,15 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> accountList;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lbAccAmount;
     private javax.swing.JTextArea logOutput;
     private javax.swing.JMenuItem miAddAccount;

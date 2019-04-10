@@ -62,7 +62,7 @@ public class AccountTest {
     @Test
     public void testWithdraw() {
         System.out.println("withdraw");
-        Account instance = new Account(50.0);
+        Account instance = new Account(50.0,null);
         instance.withdraw(amount);
         double res = instance.getAmount();
         assertEquals(result, res,0.0);
